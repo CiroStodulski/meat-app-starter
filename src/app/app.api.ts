@@ -1,0 +1,1 @@
+export const MEATT_API = 'http://localhost:3000';
