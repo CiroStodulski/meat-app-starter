@@ -28,6 +28,11 @@
     <div *ngFor="let restaurant of restaurants" class="col-sm-6 col-xs-12">
       <mt-restaurant [restaurant]="restaurant"></mt-restaurant>
     </div>
+    <div *ngIf="restaurants?.length === 0" class="col-sm-6 col-xs-12">
+      <p class="lead tex-center">
+        Não foi encontrados itens para sua busca
+      </p>
+    </div>
     <!-- /.col -->
   </div>
 

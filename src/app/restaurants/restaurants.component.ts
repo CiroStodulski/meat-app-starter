@@ -5,6 +5,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 import "rxjs/add/operator/switchMap"
+import "rxjs/add/operator/do"
+import "rxjs/add/operator/debounceTime"
+import "rxjs/add/operator/catch"
+import "rxjs/add/observable/from"
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'mt-restaurants',
@@ -35,9 +40,11 @@ export class RestaurantsComponent implements OnInit {
       searchControl: this.searchControl
     })
 
-    this.searchControl.valueChanges.subscribe(searchteam => {
-      return this.restauransService.restaurants(searchteam)
-    })
+    this.searchControl.valueChanges
+      .debounceTime(500)
+      .do(searchTem => console.log(`q=${searchTem}`))
+      .switchMap(searchteam => this.restauransService.restaurants(searchteam).catch(error => Observable.from([])))
+      .subscribe(restaurants => this.restaurants = restaurants)
   }
 
   togleSearch() {
